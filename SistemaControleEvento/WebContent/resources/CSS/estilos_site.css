@@ -33,9 +33,7 @@ body {
 .colunaLabel {
 	float: right;
 }
-.linha1{
-	vertical-align: top;
-}
+
 .logotipo {
 	position: relative;
 	margin-left: -150px;
