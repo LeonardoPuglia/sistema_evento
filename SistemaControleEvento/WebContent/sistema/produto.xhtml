@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/modelo.xhtml">
+
+<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{produtoBean.listar}" type="preRenderView" />
+		</f:metadata>
+</ui:define>
+
+	<ui:define name="conteudo">
+
+		<h:form id="formProduto">
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+						 id="tabProduto"
+						 widgetVar="widtabProduto"
+						 paginator="true"
+						 rows="8" 
+						 value="#{produtoBean.listaProdutos}"
+						 var="produto"
+						 filteredValue="#{produtoBean.listaFiltrados}">
+				<f:facet name="header">
+					<h:outputText value="Lista de Produtos" />
+				</f:facet>	
+					<p:column headerText="Código" width="8%">
+						<h:outputText value="#{produto.codProduto}"/>
+					</p:column>
+					
+					<p:column headerText="Nome" width="20%"
+							  sortBy="#{produto.nome}">
+						<h:outputText value="#{produto.nome}"/>
+					</p:column>
+					
+					<p:column headerText="Descrição" width="35%">
+						<h:outputText value="#{produto.descricao}"/>
+					</p:column>
+					
+					<p:column headerText="Fornecedor" 
+					          sortBy="#{produto.fornecedor.razaoSocial}" width="16%"
+					          filterBy="#{produto.fornecedor.razaoSocial}">
+						<h:outputText value="#{produto.fornecedor.razaoSocial}"/>
+					</p:column>
+					
+					<p:column headerText="Valor" width="8%">
+						<h:outputText value="#{produto.valor}"/>
+					</p:column>
+					
+					<p:column headerText="Qtd" width="5%">
+						<h:outputText value="#{produto.quantidade}"/>
+					</p:column>
+					
+					<p:column style='display:none'>
+					<p:column  headerText="Medida">
+						<h:outputText value="#{produto.unidadeMedida}"/>
+					</p:column>
+					
+					<p:column headerText="Carência" width="10%">
+						<h:outputText value="#{produto.carenciaDias}"/>
+					</p:column>
+					
+					</p:column>
+					
+					<p:column headerText="Opções">
+						<p:commandButton  icon="ui-icon-pencil"
+										  oncomplete="PF('dlgProdutoEditar').show();"
+										  update=":formProdutoEditar:pnlProdutoEditar :MsgGlobal"
+										  actionListener="#{produtoBean.carregarCadastro}">
+							<f:setPropertyActionListener target="#{produtoBean.produto}" 
+														 value="#{produto}"/>
+						</p:commandButton >
+						
+						<p:commandButton  icon="ui-icon-trash"
+										  oncomplete="PF('dlgProdutoExcluir').show();"
+										  update=":formProdutoExcluir:pnlProdutoExcluir :MsgGlobal"
+										  actionListener="#{produtoBean.carregarCadastro}">
+							<f:setPropertyActionListener target="#{produtoBean.produto}" 
+														 value="#{produto}"/>
+						</p:commandButton >
+						
+					</p:column>
+					
+					<f:facet name="footer">
+						<p:commandButton  value="Novo Produto"
+										  update=":formProdutoNovo:pnlProdutoNovo :MsgGlobal"
+										  oncomplete="PF('dlgProdutoNovo').show();"
+										  actionListener="#{produtoBean.novo}"  > 
+								 <!-- <f:setPropertyActionListener target="#{produtoBean.produto}" 
+														 value="#{produto}"/>-->
+						</p:commandButton>
+						
+					</f:facet>		
+					
+				
+			</p:dataTable>
+		</h:form>
+		
+		<!-- Dialogo de cadastro de produto -->
+		<p:dialog widgetVar="dlgProdutoNovo"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Novo Produto"
+				  appendTo="@(body)"
+				  showEffect="explode">
+			<h:form id="formProdutoNovo">
+				<h:panelGrid columns="2" id="pnlProdutoNovo">
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText value="#{produtoBean.produto.nome}" size="50" />
+					
+					<p:outputLabel value="Descrição"/>
+					<p:inputText value="#{produtoBean.produto.descricao}" size="50"/>
+					
+					<p:outputLabel value="Valor" />
+					<p:inputText value="#{produtoBean.produto.valor}" size="50"/>
+					
+					<p:outputLabel value="Qtd"/>
+					<p:inputText value="#{produtoBean.produto.quantidade}"/>
+					
+					<p:outputLabel value="Medida"/>
+					<p:inputText value="#{produtoBean.produto.unidadeMedida}" size="50"/>
+					
+					<p:outputLabel value="Carência"/>
+					<p:inputText value="#{produtoBean.produto.carenciaDias}" size="50"/>
+					
+					<p:outputLabel value="Fornecedor"/>
+					<p:selectOneMenu value="#{produtoBean.produto.fornecedor}" 
+									 filter="true" 
+									 converter="fornecedorConverter">
+						<f:selectItem itemLabel="Selecione um Fabricante"/>
+						<f:selectItems value="#{produtoBean.comboFornecedores}"
+									   var="item"
+									   itemValue="#{item}"
+									   itemLabel="#{item.razaoSocial}"/>  
+					</p:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+					                 actionListener="#{produtoBean.salvar}"
+					                 update=":MsgGlobal :formProduto:tabProduto"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgProdutoNovo').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<!-- Dialogo de edição de produto -->
+		<p:dialog widgetVar="dlgProdutoEditar"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Editar Produto"
+				  appendTo="@(body)">
+			<h:form id="formProdutoEditar">
+				<h:panelGrid columns="2" id="pnlProdutoEditar">
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText value="#{produtoBean.produto.nome}" />
+					
+					<p:outputLabel value="Descrição"/>
+					<p:inputText value="#{produtoBean.produto.descricao}"/>
+					
+					<p:outputLabel value="Valor"/>
+					<p:inputText value="#{produtoBean.produto.valor}" />
+					
+					<p:outputLabel value="Qtd"/>
+					<p:inputText value="#{produtoBean.produto.quantidade}"/>
+					
+					<p:outputLabel value="Medida"/>
+					<p:inputText value="#{produtoBean.produto.unidadeMedida}"/>
+					
+					<p:outputLabel value="Carência"/>
+					<p:inputText value="#{produtoBean.produto.carenciaDias}"/>
+					
+					<p:outputLabel value="Fornecedor"/>
+					<p:selectOneMenu value="#{produtoBean.produto.fornecedor.codFornecedor}"
+							         filter="true">
+						<f:selectItem itemLabel="Selecione um Fabricante"/>
+						<f:selectItems value="#{produtoBean.comboFornecedores}"
+						               var="item"
+						               itemValue="#{item.codFornecedor}"
+						               itemLabel="#{item.razaoSocial}"/>  
+					</p:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar"
+					                 actionListener="#{produtoBean.editar}"
+					                 update=":MsgGlobal :formProduto:tabProduto"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgProdutoEditar').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog widgetVar="dlgProdutoExcluir"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Excluir Produto"
+				  appendTo="@(body)">
+			<h:form id="formProdutoExcluir">
+				<h:panelGrid columns="2" id="pnlProdutoExcluir">
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText value="#{produtoBean.produto.nome}" readonly="true" />
+					
+					<p:outputLabel value="Descrição"/>
+					<p:inputText value="#{produtoBean.produto.descricao}"/>
+					
+					<p:outputLabel value="Valor"/>
+					<p:inputText value="#{produtoBean.produto.valor}" readonly="true"/>
+					
+					<p:outputLabel value="Qtd"/>
+					<p:inputText value="#{produtoBean.produto.quantidade}" readonly="true"/>
+					
+					<p:outputLabel value="Medida"/>
+					<p:inputText value="#{produtoBean.produto.unidadeMedida}" readonly="true"/>
+					
+					<p:outputLabel value="Carência"/>
+					<p:inputText value="#{produtoBean.produto.carenciaDias}" readonly="true"/>
+					
+					<p:outputLabel value="Fornecedor"/>
+					<p:inputText  value="#{produtoBean.produto.fornecedor.razaoSocial}" readonly="true"/>
+					<!-- 
+					<p:selectOneMenu value="#{produtoBean.produto.fornecedor.codFornecedor}"
+							         filter="true">
+						<f:selectItem itemLabel="Selecione um Fabricante"/>
+						<f:selectItems value="#{produtoBean.comboFornecedores}"
+						               var="item"
+						               itemValue="#{item.codFornecedor}"
+						               itemLabel="#{item.razaoSocial}"/>  
+					</p:selectOneMenu>
+					 -->
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir"
+					                 actionListener="#{produtoBean.excluir}"
+					                 update=":MsgGlobal :formProduto:tabProduto"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgProdutoExcluir').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

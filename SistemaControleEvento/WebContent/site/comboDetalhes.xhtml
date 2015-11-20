@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</h:head>
+<ui:composition template="/site/templates/layout.xhtml">
+	<ui:define name="titulo">Mundo em Festa | </ui:define>
+	<ui:define name="content">
+		<h:form>
+			<h:panelGrid id="comboDialogo" columns="1">
+				<h:panelGrid columns="2">
+					<p:galleria var="imagem" showCaption="true" panelWidth="500"
+						panelHeight="500"
+						value="#{buscarComboBean.comboSelecionada.imagens}">
+						<p:graphicImage url="#{imagem.caminho}" alt="#{imagem.descricao}"
+							title="#{imagem.titulo}" />
+					</p:galleria>
+
+					<h:panelGrid columns="1" style="height:500px">
+						<div class="espacoDiv50">
+							<h:outputLabel styleClass="titulo1"
+								value="#{buscarComboBean.comboSelecionada.nomeCombo}" />
+						</div>
+						<div class="espacoDiv50">
+							<h:outputLabel styleClass="texto1"
+								value="#{buscarComboBean.comboSelecionada.descricao}" />
+						</div>
+						<div class="espacoDiv50">
+							<h:panelGrid columns="1">
+								<h:panelGroup>
+									<h:outputLabel styleClass="texto2"
+										value="Disponível a partir do dia " />
+									<h:outputLabel styleClass="texto2"
+										value="#{buscarComboBean.comboSelecionada.dataDisponibilidade}">
+										<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" />
+									</h:outputLabel>
+								</h:panelGroup>
+								
+								<h:outputLabel styleClass="texto2"
+									value="Capacidade para #{buscarComboBean.comboSelecionada.quantidadeConvidados} Convidados" />
+								<h:panelGrid columns="3">
+									<h:outputLabel value="Preço:" styleClass="textoDestaque"/>
+									<h:outputLabel styleClass="textoDestaque"
+										value="#{buscarComboBean.comboSelecionada.preco}">
+										<f:convertNumber currencySymbol="R$" type="currency" maxFractionDigits="2" minFractionDigits="2" />
+									</h:outputLabel>
+									<p:commandButton value="Comprar" action="#{buscarComboBean.efetuarCompra}"/>
+								</h:panelGrid>
+							</h:panelGrid>
+						</div>
+					</h:panelGrid>
+				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<div class="espacoDiv100">
+						<p:dataScroller
+							value="#{buscarComboBean.comboSelecionada.produtos}"
+							var="produto" chunkSize="4">
+
+							<f:facet name="loader">
+								<p:commandButton value="Mais" />
+							</f:facet>
+
+							<h:panelGrid columns="2">
+								<p:imageSwitch effect="fade">
+									<ui:repeat var="imagem" value="#{produto.imagens}">
+										<p:graphicImage url="#{imagem.caminho}" />
+									</ui:repeat>
+								</p:imageSwitch>
+
+								<h:panelGrid>
+									<h:outputLabel value="#{produto.nome}" styleClass="texto2" />
+									<h:outputLabel value="#{produto.descricao}" styleClass="texto1" />
+									<h:outputLabel styleClass="texto2"
+										value="Quantidade inclusa: #{produto.quantidade} #{produto.unidadeMedida}" />
+								</h:panelGrid>
+
+							</h:panelGrid>
+
+						</p:dataScroller>
+					</div>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

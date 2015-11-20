@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modelo.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{clienteBean.listar}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<h:form id="formCliente">
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+						 id="tabCliente"
+						 widgetVar="widtabCliente"
+						 paginator="true"
+						 rows="8"
+						 value="#{clienteBean.listaClientes}"
+						 var="cliente"
+						 filteredValue="#{clienteBean.listaClientesFiltrados}" >
+				<f:facet name="header">
+					<h:outputText value="Lista de Clientes" />
+				</f:facet>
+					
+					<p:column headerText="Código" width="8%">
+						<h:outputText value="#{cliente.codCliente}"/>
+					</p:column>
+					
+					<p:column headerText="CPF">
+						<h:outputText value="#{cliente.cpf}"/>
+					</p:column>
+					
+					<p:column headerText="Nome">
+						<h:outputText value="#{cliente.nome}"/>
+					</p:column>
+					
+					<p:column headerText="Data Nascimento">
+						<h:outputText value="#{cliente.dataNascimento}"/>
+					</p:column>
+					<p:column style="display:none">
+						<p:column headerText="Tel">
+							<h:outputText value="#{cliente.telefone}"/>
+						</p:column>
+							
+						<p:column headerText="Celular">
+							<h:outputText value="#{cliente.celular}"/>
+						</p:column>
+					
+						<p:column headerText="Email">
+							<h:outputText value="#{cliente.email}"/>
+						</p:column>
+					
+						<p:column headerText="Tel Recado">
+							<h:outputText value="#{cliente.telRecado}"/>
+						</p:column>
+					
+						<p:column headerText="Nome Recado">
+							<h:outputText value="#{cliente.nomeRecado}"/>
+						</p:column>
+						
+						<p:column headerText="Complemento">
+							<h:outputText value="#{cliente.complemento}"/>
+						</p:column>
+						
+						<p:column headerText="CEP">
+							<h:outputText value="#{cliente.cep}"/>
+						</p:column>
+						
+						<p:column headerText="">
+							<h:outputText value="#{cliente.senha}"/>
+						</p:column>
+					</p:column>
+					
+					<p:column headerText="Logadouro">
+						<h:outputText value="#{cliente.logadouro}"/>
+					</p:column>
+					
+					
+					<p:column headerText="N°">
+						<h:outputText value="#{cliente.numero}"/>
+					</p:column>	
+					
+					
+					<p:column headerText="Bairro">
+						<h:outputText value="#{cliente.bairro}"/>
+					</p:column>
+					
+					<p:column headerText="Cidade">
+						<h:outputText value="#{cliente.cidade}"/>
+					</p:column>
+					
+					<p:column headerText="UF">
+						<h:outputText value="#{cliente.uf}"/>
+					</p:column>
+					
+					<p:column headerText="Opções">
+						<p:commandButton  icon="ui-icon-pencil"
+										  oncomplete="PF('dlgClienteEditar').show();"
+										  update=":formClienteEditar:pnlClienteEditar :MsgGlobal">
+							<f:setPropertyActionListener target="#{clienteBean.cliente}" 
+														 value="#{cliente}"/>
+		                </p:commandButton >
+		                
+		                <p:commandButton  icon="ui-icon-trash"
+										  oncomplete="PF('dlgClienteExcluir').show();"
+										  update=":formClienteExcluir:pnlClienteExcluir :MsgGlobal">
+							<f:setPropertyActionListener target="#{clienteBean.cliente}" 
+														 value="#{cliente}"/>  	
+							
+						</p:commandButton >
+					</p:column>
+					
+					<f:facet name="footer">
+						<p:commandButton  value="Novo Cliente"
+										  oncomplete="PF('dlgClienteNovo').show();"
+										  actionListener="#{clienteBean.novo}" />
+						
+					</f:facet>
+					
+				
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog widgetVar="dlgClienteNovo"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Novo Cliente"
+				  appendTo="@(body)">
+				  
+			<h:form id="formClienteNovo">
+				<h:panelGrid columns="2" id="pnlClienteNovo">
+					<p:outputLabel value="CPF"/>
+					<p:inputText value="#{clienteBean.cliente.cpf}" maxlength="11"/>
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText value="#{clienteBean.cliente.nome}"/>
+					
+					<p:outputLabel value="Sobrenome"/>
+					<p:inputText value="#{clienteBean.cliente.sobrenome}"/>
+					
+					<p:outputLabel value="Data Nascimento"/>
+					<p:calendar value="#{clienteBean.cliente.dataNascimento}"  size="10"/> 
+					
+					
+					<p:outputLabel value="Telefone"/>
+					<p:inputText value="#{clienteBean.cliente.telefone}" maxlength="10" />
+					
+					<p:outputLabel value="Celular"/>
+					<p:inputText value="#{clienteBean.cliente.celular}"  maxlength="11"/>
+					
+					<p:outputLabel value="Email"/>
+					<p:inputText value="#{clienteBean.cliente.email}" />
+					
+					<p:outputLabel value="Tel Recado"/>
+					<p:inputText value="#{clienteBean.cliente.telRecado}"  maxlength="10"/>
+					
+					<p:outputLabel value="Nome Recado"/>
+					<p:inputText value="#{clienteBean.cliente.nomeRecado}" />
+					
+					<p:outputLabel value="Logadouro"/>
+					<p:inputText value="#{clienteBean.cliente.logadouro}" />
+					
+					<p:outputLabel value="N°"/>
+					<p:inputText value="#{clienteBean.cliente.numero}" />
+					
+					<p:outputLabel value="Complemento"/>
+					<p:inputText value="#{clienteBean.cliente.complemento}"/>
+					
+					<p:outputLabel value="Bairro"/>
+					<p:inputText value="#{clienteBean.cliente.bairro}" />
+					
+					<p:outputLabel value="Cidade"/>
+					<p:inputText value="#{clienteBean.cliente.cidade}" />
+					
+					<p:outputLabel value="Estado"/>
+					<p:inputText value="#{clienteBean.cliente.uf}" />
+					
+										
+					<p:outputLabel value="CEP"/>
+					<p:inputText value="#{clienteBean.cliente.cep}"  maxlength="8"/>
+					
+					<p:outputLabel value="Senha"/>
+					<p:password value="#{clienteBean.cliente.senha}" feedback="true"  maxlength="10"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+									 actionListener="#{clienteBean.salvar}"
+									 update=":MsgGlobal :formCliente:tabCliente"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgClienteNovo').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		
+		</p:dialog>
+		
+		<p:dialog widgetVar="dlgClienteEditar"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Editar Cliente"
+				  appendTo="@(body)">
+				  
+			<h:form id="formClienteEditar">
+				<h:panelGrid columns="2" id="pnlClienteEditar">
+					<p:outputLabel value="CPF"/>
+					<p:inputText value="#{clienteBean.cliente.cpf}" maxlength="11" size="50"/>
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText value="#{clienteBean.cliente.nome}" size="50"/>
+					
+					<p:outputLabel value="Sobrenome"/>
+					<p:inputText value="#{clienteBean.cliente.sobrenome}" size="50"/>
+					
+					<p:outputLabel value="Data Nascimento"/>
+					<p:calendar value="#{clienteBean.cliente.dataNascimento}"  size="10"/> 
+					
+					<p:outputLabel value="Telefone"/>
+					<p:inputText value="#{clienteBean.cliente.telefone}" size="50" maxlength="10"/>
+					
+					<p:outputLabel value="Celular"/>
+					<p:inputText value="#{clienteBean.cliente.celular}" size="50" maxlength="11"/>
+					
+					<p:outputLabel value="Email"/>
+					<p:inputText value="#{clienteBean.cliente.email}" size="50"/>
+					
+					<p:outputLabel value="Tel Recado"/>
+					<p:inputText  value="#{clienteBean.cliente.telRecado}" size="50" maxlength="10"/>
+					
+					<p:outputLabel value="Nome Recado"/>
+					<p:inputText value="#{clienteBean.cliente.nomeRecado}" size="50"/>
+					
+					<p:outputLabel value="Logadouro"/>
+					<p:inputText value="#{clienteBean.cliente.logadouro}" size="50"/>
+					
+					<p:outputLabel value="N°"/>
+					<p:inputText value="#{clienteBean.cliente.numero}" size="50"/>
+					
+					<p:outputLabel value="Complemento"/>
+					<p:inputText value="#{clienteBean.cliente.complemento}" size="50"/>
+					
+					<p:outputLabel value="Bairro"/>
+					<p:inputText value="#{clienteBean.cliente.bairro}" size="50"/>
+					
+					<p:outputLabel value="Cidade"/>
+					<p:inputText value="#{clienteBean.cliente.cidade}" size="50"/>
+					
+					<p:outputLabel value="Estado"/>
+					<p:inputText value="#{clienteBean.cliente.uf}" size="50"/>
+					
+										
+					<p:outputLabel value="CEP"/>
+					<p:inputText value="#{clienteBean.cliente.cep}" size="50" maxlength="8"/>
+					
+					<p:outputLabel value="Senha"/>
+					<p:inputText value="#{clienteBean.cliente.senha}" size="50" maxlength="10" />
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar"
+									 actionListener="#{clienteBean.editar}"
+									 update=":MsgGlobal :formCliente:tabCliente"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgClienteEditar').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		
+		</p:dialog>
+		
+		<p:dialog widgetVar="dlgClienteExcluir"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Excluir Cliente"
+				  appendTo="@(body)">
+				  
+			<h:form id="formClienteExcluir" >
+				<h:panelGrid columns="2" id="pnlClienteExcluir" >
+					<p:outputLabel value="CPF"/>
+					<p:inputText value="#{clienteBean.cliente.cpf}" maxlength="11" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Nome"/>
+					<p:inputText value="#{clienteBean.cliente.nome}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Sobrenome"/>
+					<p:inputText value="#{clienteBean.cliente.sobrenome}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Data Nascimento"/>
+					<p:inputText value="#{clienteBean.cliente.dataNascimento}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Telefone"/>
+					<p:inputText value="#{clienteBean.cliente.telefone}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Celular"/>
+					<p:inputText value="#{clienteBean.cliente.celular}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Email"/>
+					<p:inputText value="#{clienteBean.cliente.email}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Tel Recado"/>
+					<p:inputText value="#{clienteBean.cliente.telRecado}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Nome Recado"/>
+					<p:inputText value="#{clienteBean.cliente.nomeRecado}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Logadouro"/>
+					<p:inputText value="#{clienteBean.cliente.logadouro}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="N°"/>
+					<p:inputText value="#{clienteBean.cliente.numero}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Complemento"/>
+					<p:inputText value="#{clienteBean.cliente.complemento}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Bairro"/>
+					<p:inputText value="#{clienteBean.cliente.bairro}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Cidade"/>
+					<p:inputText value="#{clienteBean.cliente.cidade}" size="50" readonly="true"/>
+					
+					<p:outputLabel value="Estado"/>
+					<p:inputText value="#{clienteBean.cliente.uf}" size="50" readonly="true"/>
+					
+										
+					<p:outputLabel value="CEP"/>
+					<p:inputText value="#{clienteBean.cliente.cep}" size="50" maxlength="8" readonly="true"/>
+					
+					<p:outputLabel value="Senha"/>
+					<p:inputText value="#{clienteBean.cliente.senha}" size="50" readonly="true" />
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir"
+									 actionListener="#{clienteBean.excluir}"
+									 update=":MsgGlobal :formCliente:tabCliente"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgClienteExcluir').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>
+</html>

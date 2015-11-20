@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body>
+
+	<ui:composition template="/site/templates/layout.xhtml">
+		<ui:define name="content">
+			<h:form id="formCombo">
+				<p:dataGrid value="#{buscarComboBean.combos}" var="combo"
+					layout="grid" columns="3" paginator="true"
+					rowsPerPageTemplate="10,20,30" rows="10"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+					<p:panel header="#{combo.nomeCombo}">
+						<h:panelGrid columns="1">
+							<h:graphicImage url="../resources/IMG/site/combos/01.jpg" />
+							<h:panelGroup>
+								<p:outputLabel value="Preço:" />
+								<p:outputLabel value="#{combo.preco}">
+									<f:convertNumber currencySymbol="R$" type="currency"
+										maxFractionDigits="2" minFractionDigits="2" />
+								</p:outputLabel>
+							</h:panelGroup>
+							<p:outputLabel
+								value="Capacidade para: #{combo.quantidadeConvidados} pessoas" />
+							<p:commandButton value="Consultar"
+								action="#{buscarComboBean.consultarCombo(combo)}" />
+						</h:panelGrid>
+					</p:panel>
+				</p:dataGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+</html>

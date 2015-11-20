@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+
+body {
+	background-image: url("../resources/IMG/site/fundo.jpg");
+	background-repeat: repeat;
+}
+
+.corpo {
+	width: 1000px;
+	/*sombra e arredondamento da div*/
+	box-shadow: 0px 0px 28px 0px rgba(0, 0, 0, 0.81);
+	background-color:white;
+	border-radius: 10px 10px 10px 10px;
+	/*centralizar div*/
+	position: relative;
+	margin-left: -500px;
+	left: 50%;
+	/*margens da div*/
+	margin-bottom:20px;
+	margin-top:20px;
+	/*espaço interno*/
+	padding: 10px 10px 10px 10px;
+}
+
+.gridCabecalho {
+	width: 100%;
+}
+
+.barraMenu {
+	width: 100%;
+}
+
+.colunaLabel {
+	float: right;
+}
+.linha1{
+	vertical-align: top;
+}
+.logotipo {
+	position: relative;
+	margin-left: -150px;
+	left: 50%;
+}
+.espacoDiv50{
+	width:50%;
+	text-align:left;
+	margin-top: 0px;
+	left: 0px;
+}
+.espacoDiv100{
+	width:100%;
+	text-align:left;
+	left:0px;
+}
+.titulo1{
+	font-size: 20pt ;
+	color:red;
+	font-weight:bold;
+	font-family: arial;
+}
+.texto1{
+	font-size: 12pt ;
+	color:black;
+	font-family: arial;
+}
+.texto2{
+	font-size: 12pt ;
+	color:black;
+	font-weight:bold;
+	font-family: arial;
+}
+
+.textoDestaque{
+	font-size: 20pt;
+	color:blue;
+	font-weight:bold;
+	font-family: arial;
+}

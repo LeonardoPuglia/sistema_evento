@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modelo.xhtml">
+	
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{fornecedorBean.listar}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	
+
+	<ui:define name="conteudo">
+
+		<h:form id="formFornecedor">
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+			             id="tabFornecedor"
+			             widgetVar="widtabFornecedor"
+			             paginator="true"
+			             rows="8" 
+			             value="#{fornecedorBean.listaFornecedores}"
+			             var="fornecedor"
+			             filteredValue="#{fornecedorBean.listaFornecedoresFiltrados}">
+				<f:facet name="header">
+					<h:outputText value="Lista de Fornecedores" />
+				</f:facet>
+					
+					<p:column headerText="Código" width="8%">
+						<h:outputText value="#{fornecedor.codFornecedor}"/>
+					</p:column>
+					
+					<p:column headerText="CNPJ" filterBy="#{fornecedor.cnpj}" width="19%">
+						<h:outputText value="#{fornecedor.cnpj}"/>
+					</p:column>
+					
+					<p:column headerText="Nome Fantasia" 
+							  sortBy="#{fornecedor.nomeFantasia}" width="35%">
+						<h:outputText value="#{fornecedor.nomeFantasia}"/>
+					</p:column>
+					
+					<p:column headerText="Nome para Contato" width="16%">
+							<h:outputText value="#{fornecedor.nomeContato}"/>
+					</p:column>
+					
+					<!-- Deixando os campos oculto para visualização -->
+					<p:column style='display: none'>
+						<p:column  headerText="Razão Social"
+								  sortBy="#{fornecedor.razaoSocial}"
+								  filterBy="#{fornecedor.razaoSocial}">
+							<h:outputText value="#{fornecedor.razaoSocial}"/>
+						</p:column>
+											
+						<p:column headerText="Logadouro">
+							<h:outputText value="#{fornecedor.logadouro}"/>
+						</p:column>
+						
+						<p:column headerText="N°">
+							<h:outputText value="#{fornecedor.numero}"/>
+						</p:column>	
+						
+						<p:column headerText="Complemento">
+							<h:outputText value="#{fornecedor.complemento}"/>
+						</p:column>
+						
+						<p:column headerText="Bairro"
+								  sortBy="#{fornecedor.bairro}">
+							<h:outputText value="#{fornecedor.bairro}"/>
+						</p:column>
+						
+						<p:column headerText="Cidade"
+								  sortBy="#{fornecedor.cidade}">
+							<h:outputText value="#{fornecedor.cidade}"/>
+						</p:column>
+						
+						<p:column headerText="UF"
+								  sortBy="#{fornecedor.uf}">
+							<h:outputText value="#{fornecedor.uf}"/>
+						</p:column>
+						
+						<p:column headerText="Email Contato">
+						<h:outputText value="#{fornecedor.emailContato}"/>
+					</p:column>
+					</p:column>
+					
+					<p:column headerText="Contato" width="15%">
+						<h:outputText value="#{fornecedor.telefoneContato}"/>
+					</p:column>
+					
+					<p:column headerText="Opções">
+						<p:commandButton  icon="ui-icon-pencil"
+										  oncomplete="PF('dlgFornecedorEditar').show();"
+										  update=":formFornecedorEditar:pnlFornecedorEditar :MsgGlobal">
+							<f:setPropertyActionListener target="#{fornecedorBean.fornecedor}" 
+														 value="#{fornecedor}"/>
+							
+						</p:commandButton >
+						
+					</p:column>
+					
+					<f:facet name="footer">
+						<p:commandButton  value="Novo Fornecedor"
+										  oncomplete="PF('dlgFornecedorNovo').show();"
+										  actionListener="#{fornecedorBean.novo}" />
+								
+					</f:facet>
+				
+			</p:dataTable>
+		</h:form>
+		
+		<!-- Dialogo responsável por fazer a inclusão do fornecedor  -->
+		
+		<p:dialog widgetVar="dlgFornecedorNovo"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Novo Fornecedor"
+				  appendTo="@(body)">
+				  
+			<h:form id="formFornecedorNovo">
+				<h:panelGrid columns="2" id="pnlFornecedorNovo">
+					<p:outputLabel value="CNPJ"/>
+					<p:inputMask mask="99.999.999/9999-99"
+								 value="#{fornecedorBean.fornecedor.cnpj}"
+								 size="50"  />
+					
+					<p:outputLabel value="Nome Fantasia"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.nomeFantasia}"
+								 size="50" />
+					
+					<p:outputLabel value="Razão Social"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.razaoSocial}"
+						         size="50" />
+					
+					<p:outputLabel value="Telefone Contato"/>
+					<p:inputMask mask="(99)9999-9999"
+					             value="#{fornecedorBean.fornecedor.telefoneContato}"
+					             size="50" />
+					
+					<p:outputLabel value="Nome Contato"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.nomeContato}"
+					             size="50"/>
+					
+					<p:outputLabel value="Email Contato"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.emailContato}"
+					             size="50" />
+					
+					<p:outputLabel value="Logadouro"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.logadouro}"
+					             size="50"/>
+					
+					<p:outputLabel value="N°"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.numero}"
+					             size="50"/>
+					
+					<p:outputLabel value="Complemento"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.complemento}"
+					             size="50"/>
+					
+					<p:outputLabel value="Bairro"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.bairro}"
+					             size="50"/>
+					
+					<p:outputLabel value="Cidade"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.cidade}"
+					             size="50"/>
+					
+					<p:outputLabel value="Estado"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.uf}"
+					             size="50"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Salvar"
+									 actionListener="#{fornecedorBean.salvar}"
+									 update=":MsgGlobal :formFornecedor:tabFornecedor"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgFornecedorNovo').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		
+		</p:dialog>
+		
+		
+		<!-- Dialogo responsável por fazer a edição do fornecedor  -->
+		
+		<p:dialog widgetVar="dlgFornecedorEditar"
+				  closable="false" 
+				  draggable="false" 
+				  modal="true" 
+				  resizable="false"
+				  header="Editar Fornecedor"
+				  appendTo="@(body)">
+				  
+			<h:form id="formFornecedorEditar">
+				<h:panelGrid columns="2" id="pnlFornecedorEditar">
+					
+					<p:outputLabel value="Código"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.codFornecedor}" readonly="true"/>
+					
+					<p:outputLabel value="CNPJ"/>
+					<p:inputMask mask="99.999.999/9999-99"
+								 value="#{fornecedorBean.fornecedor.cnpj}"/>
+					
+					<p:outputLabel value="Nome Fantasia"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.nomeFantasia}" />
+					
+					<p:outputLabel value="Razão Social"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.razaoSocial}" />
+					
+					<p:outputLabel value="Telefone Contato"/>
+					<p:inputMask mask="(99)9999-9999"
+					             value="#{fornecedorBean.fornecedor.telefoneContato}"/>
+					
+					<p:outputLabel value="Nome Contato"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.nomeContato}"/>
+					
+					<p:outputLabel value="Email Contato"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.emailContato}"/>
+					
+					<p:outputLabel value="Logadouro"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.logadouro}"/>
+					
+					<p:outputLabel value="N°"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.numero}"/>
+					
+					<p:outputLabel value="Complemento"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.complemento}"/>
+					
+					<p:outputLabel value="Bairro"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.bairro}"/>
+					
+					<p:outputLabel value="Cidade"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.cidade}" />
+					
+					<p:outputLabel value="Estado"/>
+					<p:inputText value="#{fornecedorBean.fornecedor.uf}"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar"
+									 actionListener="#{fornecedorBean.editar}"
+									 update=":MsgGlobal :formFornecedor:tabFornecedor"/>
+					<p:commandButton value="Sair"
+									 oncomplete="PF('dlgFornecedorEditar').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		
+		</p:dialog>
+		
+		
+		
+	</ui:define>
+</ui:composition>
+</html>

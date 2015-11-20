@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<ui:composition template="/site/templates/layout.xhtml">
+	<ui:define name="titulo">Mundo em Festa | </ui:define>
+
+	<ui:define name="content">
+		<h:form id="formulario">
+			<p:messages closable="true" showDetail="false" showIcon="true"
+				autoUpdate="true" />
+			<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInput">
+				<p:outputLabel value="Defina a data e hora de início: " />
+				<p:calendar value="#{efetuarCompraBean.evento.dataHora}"
+					readonly="true" pattern="dd/MM/yyyy HH:mm"
+					mindate="#{efetuarCompraBean.evento.combo.dataDisponibilidade}"
+					locale="pt" />
+				<p:outputLabel value="Quantos convidados?" />
+
+				<p:inputText size="5"
+					value="#{efetuarCompraBean.evento.quantidadeConvidados}"
+					validatorMessage="A quantidade de convidados deve ser menor ou igual a #{efetuarCompraBean.evento.combo.quantidadeConvidados}">
+					<f:convertNumber integerOnly="true" />
+					<f:validateLongRange minimum="1"
+						maximum="#{efetuarCompraBean.evento.combo.quantidadeConvidados}" />
+				</p:inputText>
+
+				<p:outputLabel value="Responsável:" />
+				<p:outputLabel
+					value="#{efetuarCompraBean.evento.cliente.nome} #{efetuarCompraBean.evento.cliente.sobrenome}" />
+
+				<p:outputLabel value="Combo Selecionada:" />
+				<h:panelGroup>
+					<h:panelGrid columns="2">
+						<p:outputLabel value="#{efetuarCompraBean.evento.combo.nomeCombo}" />
+						<p:commandButton value="Consultar"
+							onclick="PF('comboDialog').show()" />
+					</h:panelGrid>
+				</h:panelGroup>
+
+				<p:outputLabel value="Quantidade Máxima:" />
+				<p:outputLabel value="#{efetuarCompraBean.evento.combo.quantidadeConvidados} Convidados" />
+
+				<p:outputLabel value="Preço:" />
+				<p:outputLabel value="#{efetuarCompraBean.evento.combo.preco}">
+					<f:convertNumber currencySymbol="R$" type="currency"
+						maxFractionDigits="2" minFractionDigits="2" />
+				</p:outputLabel>
+				<p:commandButton value="Comprar"
+					action="#{efetuarCompraBean.efetuarPagamento}" />
+			</h:panelGrid>
+
+			<p:dialog widgetVar="comboDialog" closable="true"
+				header="#{efetuarCompraBean.evento.combo.nomeCombo}"
+				showEffect="fade" width="50%" height="80%">
+				<h:panelGrid columns="2" rowClasses="linha1">
+					<p:galleria var="imagem" showCaption="false" panelWidth="250"
+						panelHeight="250"
+						value="#{efetuarCompraBean.evento.combo.imagens}">
+						<p:graphicImage url="#{imagem.caminho}" width="250px"
+							height="250px" />
+					</p:galleria>
+
+					<h:panelGrid columns="1" styleClass="espacoDiv50">
+						<div class="espacoDiv50">
+							<h:inputTextarea styleClass="texto1" disabled="true"
+								style="width:250px;height:250px"
+								value="#{efetuarCompraBean.evento.combo.descricao}" />
+						</div>
+						<div class="espacoDiv50">
+							<h:panelGrid columns="1">
+								<h:panelGroup>
+									<h:outputLabel styleClass="texto2"
+										value="Disponível a partir do dia " />
+									<h:outputLabel styleClass="texto2"
+										value="#{efetuarCompraBean.evento.combo.dataDisponibilidade}">
+										<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" />
+									</h:outputLabel>
+								</h:panelGroup>
+
+								<h:outputLabel styleClass="texto2"
+									value="Capacidade para #{efetuarCompraBean.evento.combo.quantidadeConvidados} Convidados" />
+								<h:panelGrid columns="2">
+									<h:outputLabel styleClass="textoDestaque" value="Preço:" />
+									<h:outputLabel styleClass="textoDestaque"
+										value="#{efetuarCompraBean.evento.combo.preco}">
+										<f:convertNumber currencySymbol="R$" type="currency"
+											maxFractionDigits="2" minFractionDigits="2" />
+									</h:outputLabel>
+								</h:panelGrid>
+							</h:panelGrid>
+						</div>
+					</h:panelGrid>
+				</h:panelGrid>
+				<p:dataList value="#{efetuarCompraBean.evento.combo.produtos}"
+					var="produto" type="unordered" itemType="none" paginator="true"
+					rows="5" styleClass="paginated">
+					<f:facet name="header">
+            			Produtos
+        			</f:facet>
+					<h:outputText
+						value="Nome: #{produto.nome} | Quantidade: #{produto.quantidade}"
+						style="display:inline-block" />
+				</p:dataList>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

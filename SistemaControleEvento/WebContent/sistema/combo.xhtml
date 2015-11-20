@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modelo.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{produtoBean.listar}" type="preRenderView" />
+			<f:event listener="#{comboBean.carregarCombos}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	
+	<ui:define name="conteudo">
+		
+		<p:fieldset legend="Cadastro da Combo">
+  			<h:form id="formCombo">
+  				<h:panelGrid columns="8">
+  					<p:outputLabel value="Nome:"/>
+  					<p:inputText value="#{comboBean.combo.nomeCombo}"/>
+  				
+  					<p:outputLabel value="Salão de Festas:"/>
+  					<p:selectOneMenu value="#{comboBean.combo.salaofesta}"
+  									 filter="true"
+  									 converter="salaoConverter">
+  						<f:selectItem itemLabel="Selecione um salão de festas..."/>
+  						<f:selectItems value="#{comboBean.comboSalao}"
+  								       var="salao"
+  									   itemLabel="#{salao.nome}"
+  									   itemValue="#{salao}"/>
+  					</p:selectOneMenu>
+  					<p:outputLabel value="Quantidade de Convidados:"/>
+  					<p:inputText value="#{comboBean.combo.quantidadeConvidados}"/>
+  					
+  					<p:outputPanel  value="Imagem"/>
+  					<p:fileUpload />
+  					
+  					<p:outputLabel value="Descrição:"/>
+  					<p:inputText value="#{comboBean.combo.descricao}"/>
+  					
+  			
+  					
+  				</h:panelGrid>
+  			
+		
+		
+		
+		<p:separator />
+		
+			<p:dataTable emptyMessage="Nenhum registro encontrado"
+						 id="tabProduto"
+						 widgetVar="widtabProduto"
+						 paginator="true"
+						 rows="5" 
+						 value="#{produtoBean.listaProdutos}"
+						 var="produto">
+					<f:facet name="header">
+						<h:outputText value="Lista de Produtos" />	
+					</f:facet>		 
+						 
+					<p:column headerText="Nome" width="20%"
+							  sortBy="#{produto.nome}">
+						<h:outputText value="#{produto.nome}"/>
+					</p:column>
+					
+					<p:column >
+						<h:outputText value="#{produto.codProduto}"/>
+					</p:column>
+					
+					<p:column headerText="Descrição" width="35%">
+						<h:outputText value="#{produto.descricao}"/>
+					</p:column>
+					
+					<p:column headerText="Fornecedor" 
+					          sortBy="#{produto.fornecedor.razaoSocial}" width="19%"
+					          filterBy="#{produto.fornecedor.razaoSocial}">
+						<h:outputText value="#{produto.fornecedor.razaoSocial}"/>
+					</p:column>
+					
+					<p:column headerText="Valor" width="10%">
+						<h:outputText value="#{produto.valor}"/>
+					</p:column>
+					
+					<p:column headerText="Qtd" width="10%">
+						<h:outputText  value="#{produto.quantidade}"/>
+					</p:column>
+					
+					<p:column style='display:none'>
+					<p:column  headerText="Medida">
+						<h:outputText value="#{produto.unidadeMedida}"/>
+					</p:column>
+					
+					<p:column headerText="Carência" width="10%">
+						<h:outputText value="#{produto.carenciaDias}"/>
+					</p:column>
+					
+					
+					</p:column>
+					
+					<p:column headerText="Opções" width="10%">
+						<p:commandButton icon="ui-icon-plus"
+										 oncomplete="PF('dlgQtd').show();"
+										 update=":formQtd:pnlQtd :MsgGlobal">
+							<f:setPropertyActionListener target="#{produtoBean.produto}" 
+														 value="#{produto}" />
+						</p:commandButton>
+					</p:column>
+						 
+				</p:dataTable>
+				
+				
+				
+		<p:separator />
+		
+		
+		
+		<p:dataTable emptyMessage="Nenhum registro encontrado"
+						 id="tabCombo"
+						 widgetVar="widtabProdutoCombo"
+						 paginator="true"
+						 rows="5" 
+						 value="#{comboBean.listaProduto}"
+						 var="prodCombo">
+					<f:facet name="header">
+						<h:outputText value="Lista de Produtos da Combo" />
+					</f:facet>		 
+						 
+					<p:column headerText="Nome" width="20%">
+						<h:outputText value="#{prodCombo.nome}"/>
+					</p:column>
+					
+					<p:column headerText="Descrição" width="35%">
+						<h:outputText value="#{prodCombo.descricao}"/>
+					</p:column>
+					
+					<p:column headerText="Fornecedor" width="19%">
+						<h:outputText value="#{prodCombo.fornecedor.razaoSocial}"/>
+					</p:column>
+					
+					<p:column headerText="Valor" width="10%">
+						<h:outputText value="#{prodCombo.valor}"/>
+					</p:column>
+					
+					<p:column headerText="Qtd" width="10%">
+						<h:outputText  value="#{prodCombo.quantidade}"/>
+					</p:column>
+					
+					<p:column style='display:none'>
+					<p:column  headerText="Medida">
+						<h:outputText value="#{prodCombo.unidadeMedida}"/>
+					</p:column>
+					
+					<p:column headerText="Carência" width="10%">
+						<h:outputText value="#{prodCombo.carenciaDias}"/>
+					</p:column>
+					
+					</p:column>
+					
+					
+					
+					<p:column headerText="Opções" width="10%">
+						<p:commandButton icon="ui-icon-minus"/>
+					</p:column>
+						 
+				</p:dataTable>
+  		
+		</h:form>
+		</p:fieldset>
+		
+		<p:dialog modal="true"
+				  resizable="false"
+				  closable="false"
+				  draggable="false"
+				  appendTo="@(body)"
+				  widgetVar="dlgQtd"
+				  header="Quantidade">
+		    <h:form id="formQtd">
+		    	<h:panelGrid id="pnlQtd" columns="2">
+					<p:outputLabel value="Quantidade"/>
+					<p:inputText  value="#{produtoBean.produto.quantidade}"/>
+					
+					<p:outputLabel value="produto"/>
+					<h:outputText value="#{produtoBean.produto.nome}"/>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Adicionar"
+									 update=":MsgGlobal :formCombo:tabCombo"
+									 oncomplete="#{comboBean.adicionar(produtobean.produto)}"/>
+				
+					<p:commandButton value="Cancelar"
+									 oncomplete="PF('dlgQtd').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

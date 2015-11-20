@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="CSS" name="estilos_site.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<h:graphicImage library="IMG" name="site/logo-festa.png" styleClass="logotipo"/>
+		<h:panelGrid columns="1" columnClasses="barraMenu"
+			styleClass="gridCabecalho">
+			<p:menubar styleClass="testemenu">
+				<p:menuitem value="Início" action="/site/inicial.xhtml" styleClass="subItemMenu" />
+				<p:menuitem value="Produtos" styleClass="subItemMenu" url="/site/buscarCombo.xhtml" />
+				<p:menuitem value="Sobre" styleClass="subItemMenu" />
+				<p:menuitem value="Ajuda" styleClass="subItemMenu" />
+				<p:menuitem value="Cadastrar" rendered="#{!loginBean.usuarioLogado}"
+					styleClass="subItemMenu" url="/site/cadastrar.xhtml" />
+				<p:menuitem value="Login" rendered="#{!loginBean.usuarioLogado}"
+					url="/site/login.xhtml" />
+				<p:submenu label="Meu Espaço" rendered="#{loginBean.usuarioLogado}">
+					<p:menuitem value="Meu Cadastro" styleClass="subItemMenu"
+						url="/site/restrito/meuCadastro.xhtml" />
+					<p:submenu label="Meus Eventos">
+						<p:menuitem value="Meus Combos" styleClass="subItemMenu"
+							url="/site/restrito/meusEventos.xhtml" />
+						<p:menuitem value="Convidados" styleClass="subItemMenu" />
+					</p:submenu>
+					<p:menuitem value="Sair" styleClass="subItemMenu"
+						action="#{loginBean.sair}"/>
+				</p:submenu>
+			</p:menubar>
+		</h:panelGrid>
+		
+	</h:form>
+</h:body>
+</html>
